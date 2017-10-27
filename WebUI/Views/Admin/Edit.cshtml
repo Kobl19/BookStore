@@ -1,0 +1,44 @@
+﻿@model Domain.Entities.Book
+
+@{
+    ViewBag.Title = "Админ панель: редактирование товара";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="panel">
+    <div class="panel-heading">
+    <h2>Редактирование книги "@Model.Name"</h2>
+    </div>
+@using (Html.BeginForm())
+{
+
+    <div class="panel-body">
+        @Html.HiddenFor(m => m.BookId)
+        @foreach (var property in ViewData.ModelMetadata.Properties)
+        {
+            if (property.PropertyName != "BookId")
+            {
+                <div class="form-group">
+
+                    <label>@(property.DisplayName ?? property.PropertyName)</label>
+                    @if (property.PropertyName == "Description")
+                    {
+                        @Html.TextArea(property.PropertyName, null, new { @class = "form-control", rows = 5 })
+                    }
+                    else
+                    {
+                        @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
+                    }
+                    @Html.ValidationMessage(property.PropertyName)
+                </div>
+            }
+        }
+    </div>
+
+    <div class="panel-footer">
+        <input type="submit" value="Сохранить" class="btn btn-primary" />
+        @Html.ActionLink("Отмена", "Index", null, new { @class="btn btn-default"})
+    </div>
+}
+</div>
+
